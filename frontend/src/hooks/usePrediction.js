@@ -5,7 +5,7 @@ export const usePrediction = () => {
 
   const algorithms = [
     { id: 'linear_regression', name: 'Regresión Lineal', description: 'Predice tendencias lineales simples' },
-    { id: 'exponential_smoothing', name: 'Suavizado Exponencial', description: 'Captura cambios recientes y tendencias' },
+    { id: 'exponential_smoothing', name: 'Regresión Logística', description: 'Predecir la probabilidades en base clientes' },
     { id: 'arima', name: 'Bosque Aleatorio', description: 'Toma la moda de las clasificaciones' },
   ];
 
