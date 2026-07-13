@@ -18,6 +18,7 @@ export const theme = {
       primary: '#f5f5f5',
       secondary: '#ffffff',
       dark: '#0d0d0d',
+      white: '#fff'
     },
     // Colores de texto - contraste máximo
     text: {

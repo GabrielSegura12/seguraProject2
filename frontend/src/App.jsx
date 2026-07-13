@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
-import ImportData from './pages/ImportData';
+import Prediction from './pages/PrediccionModule';
 import { theme } from './styles/themes';
 
 const ProtectedRoute = ({ children }) => {
@@ -44,10 +44,10 @@ function App() {
               }
             />
             <Route
-              path="/import"
+              path="/Prediction"
               element={
                 <ProtectedRoute>
-                  <ImportData />
+                  <Prediction />
                 </ProtectedRoute>
               }
             />

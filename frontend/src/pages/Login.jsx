@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { theme } from '../styles/themes';
 import StyledButton from '../components/StyledButton';
 import StyledInput from '../components/StyledInput';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -12,7 +13,8 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [error, setError] = useState(null);
-  const { login, register, user } = useAuth();
+  const { login, register, user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,160 +34,19 @@ const Login = () => {
       }
     } else {
       const result = await login(username, password);
-      if (!result.success) {
+      if (result.success) {
+        // Redirigir directamente al módulo de predicción después del login exitoso
+        navigate('/prediction');
+      } else {
         setError(result.error);
       }
     }
   };
 
+  // Si el usuario ya está autenticado, redirigir al módulo de predicción
   if (user) {
-    return (
-      <div style={{
-        display: 'flex',
-        minHeight: '100vh',
-      }}>
-        {/* Sidebar */}
-        <div style={{
-          width: '280px',
-          background: theme.colors.primary.gradient,
-          color: theme.colors.text.white,
-          padding: theme.spacing.xl,
-          position: 'fixed',
-          height: '100vh',
-          left: 0,
-          top: 0,
-        }}>
-          <h2 style={{ 
-            marginBottom: theme.spacing.xl, 
-            fontSize: theme.typography.sizes['2xl'] 
-          }}>
-            Mi App
-          </h2>
-          <div style={{
-            padding: theme.spacing.md,
-            background: theme.colors.overlay.light,
-            borderRadius: theme.borderRadius.lg,
-            marginBottom: theme.spacing.xl,
-          }}>
-            <div style={{ 
-              fontWeight: theme.typography.weights.semibold, 
-              fontSize: theme.typography.sizes.lg 
-            }}>
-              {user.full_name || user.username}
-            </div>
-            <div style={{ 
-              opacity: 0.8, 
-              fontSize: theme.typography.sizes.sm 
-            }}>
-              {user.email}
-            </div>
-          </div>
-          
-          <Link to="/import" style={{ textDecoration: 'none' }}>
-            <StyledButton
-              variant="secondary"
-              fullWidth
-              style={{
-                background: theme.colors.overlay.medium,
-                border: `2px solid ${theme.colors.overlay.dark}`,
-                color: theme.colors.text.white,
-                marginBottom: theme.spacing.sm,
-              }}
-            >
-              📤 Importar Datos
-            </StyledButton>
-          </Link>
-          
-          <StyledButton
-            variant="secondary"
-            fullWidth
-            onClick={() => window.location.href = '/'}
-            style={{
-              background: theme.colors.overlay.medium,
-              border: `2px solid ${theme.colors.overlay.dark}`,
-              color: theme.colors.text.white,
-            }}
-          >
-            Cerrar Sesión
-          </StyledButton>
-        </div>
-
-        {/* Main content */}
-        <div style={{
-          flex: 1,
-          marginLeft: '280px',
-          padding: theme.spacing.xl,
-          background: theme.colors.background.primary,
-        }}>
-          <div style={{
-            background: theme.colors.background.secondary,
-            padding: theme.spacing.xl,
-            borderRadius: theme.borderRadius.xl,
-            boxShadow: theme.colors.shadow.main,
-            marginBottom: theme.spacing.lg,
-          }}>
-            <h3 style={{ 
-              color: theme.colors.text.primary, 
-              marginBottom: theme.spacing.md 
-            }}>
-              👋 ¡Bienvenido, {user.full_name || user.username}!
-            </h3>
-            <p style={{ color: theme.colors.text.secondary }}>
-              Has iniciado sesión correctamente.
-            </p>
-          </div>
-          
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: theme.spacing.lg,
-          }}>
-            {[
-              { number: '1', label: 'Usuario activo' },
-              { number: '0', label: 'Proyectos' },
-              { number: '0', label: 'Tareas' },
-            ].map((stat, index) => (
-              <div key={index} style={{
-                background: theme.colors.background.secondary,
-                padding: theme.spacing.lg,
-                borderRadius: theme.borderRadius.lg,
-                boxShadow: theme.colors.shadow.main,
-                borderLeft: `4px solid ${theme.colors.primary.main}`,
-              }}>
-                <div style={{
-                  fontSize: theme.typography.sizes['3xl'],
-                  fontWeight: theme.typography.weights.bold,
-                  color: theme.colors.primary.main,
-                }}>
-                  {stat.number}
-                </div>
-                <div style={{
-                  color: theme.colors.text.secondary,
-                  marginTop: theme.spacing.xs,
-                }}>
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{
-            marginTop: theme.spacing.xl,
-            padding: theme.spacing.lg,
-            background: theme.colors.background.secondary,
-            borderRadius: theme.borderRadius.lg,
-            boxShadow: theme.colors.shadow.main,
-            textAlign: 'center',
-          }}>
-            <Link to="/import" style={{ textDecoration: 'none' }}>
-              <StyledButton variant="primary">
-                📤 Ir a Importar Datos
-              </StyledButton>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
+    navigate('/prediction');
+    return null;
   }
 
   return (
@@ -223,7 +84,6 @@ const Login = () => {
           textAlign: 'center',
           maxWidth: '400px',
         }}>
-          <div style={{ fontSize: '4rem', marginBottom: theme.spacing.md }}>🚀</div>
           <h1 style={{
             fontSize: theme.typography.sizes['4xl'],
             marginBottom: theme.spacing.md,
@@ -238,7 +98,7 @@ const Login = () => {
           }}>
             {isRegistering 
               ? 'Crea tu cuenta y comienza a usar nuestra plataforma' 
-              : 'Inicia sesión para acceder a tu dashboard'}
+              : 'Inicia sesión para acceder al módulo de predicción'}
           </p>
           <div style={{
             marginTop: theme.spacing.xl,
